@@ -7,11 +7,16 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\data\Pagination;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\Tag;
+use common\models\Product;
+use common\models\News;
+
 
 /**
  * Site controller
@@ -72,7 +77,26 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $tag = Tag::find()->all();
+        $news = News::find()->all();
+       
+       
+        $query = Product::find()->select('id, title_ru, description_ru, logo, price')->orderBy('id DESC')->where(['status'=> 1 ]);
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
+        $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
+        
+            
+            //var_dump($posts);
+            //die();
+
+     
+        return $this->render('index', [
+                'tag' => $tag,
+                'posts' => $posts,
+                'pages' => $pages,
+                'news' => $news,
+
+            ]);
     }
 
     /**
@@ -95,6 +119,33 @@ class SiteController extends Controller
             ]);
         }
     }
+
+    public function actionDetail($id)
+    {
+        $product = Product::find()->where(['id' => $id])->one();
+
+            return $this->render('detail', [
+                'product' => $product,
+            ]);
+    }
+
+    public function actionDetailnews($id)
+    {
+        $news = News::find()->where(['id' => $id])->one();
+
+            return $this->render('detailnews', [
+                'news' => $news,
+            ]);
+    }
+ public function actionNews()
+    {
+        $news = News::find()->all();
+
+            return $this->render('news', [
+                'news' => $news,
+            ]);
+    }
+
 
     /**
      * Logs out the current user.
