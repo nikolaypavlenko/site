@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Tag;
+use common\models\RelationTag;
+
 
 
 /**
@@ -68,8 +70,20 @@ class ProductController extends Controller
         $model = new Product();
         $tag = Tag::find()->all();
 
+        if ($model->load(Yii::$app->request->post()) ) {
+                
+                $model->save();
+                //сохранение массива тегов через форич
+                foreach ($model->tag_id as $item) {
+                    $relation = new RelationTag();
+                    $relation ->tag_id = $item;
+                    $relation ->product_id = $model->id;
+                    $relation -> save();
+                }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //var_dump($model->tag_id);
+            //die();
+            //$model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

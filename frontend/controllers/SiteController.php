@@ -79,8 +79,11 @@ class SiteController extends Controller
     {
         $tag = Tag::find()->all();
         $news = News::find()->all();
+        $test = Tag::find()->where(['id' => 2])->one();
+
+        //var_dump( $test->product); die();
        
-       
+         // постраничный вывод товара
         $query = Product::find()->select('id, title_ru, description_ru, logo, price')->orderBy('id DESC')->where(['status'=> 1 ]);
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();

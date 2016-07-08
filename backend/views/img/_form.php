@@ -14,12 +14,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'product_id')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <? foreach($image as $img) :?>
+    	<?=$img->image ?>
+	<? endforeach ;?>
 
 </div>

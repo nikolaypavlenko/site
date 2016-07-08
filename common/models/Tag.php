@@ -41,4 +41,15 @@ class Tag extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    public function getRelationTag()
+    {
+        return $this->hasMany(RelationTag::className(), ['tag_id' => 'id']);
+    }
+
+    public function getProduct()
+    {
+    return $this->hasMany(Product::className(), ['id' => 'product_id'])
+        ->via('relationTag');
+    }
 }
