@@ -39,12 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'date_update',
 
             ['class' => 'yii\grid\ActionColumn',
+            //добавление кнопки imaje для загрузки файлов-картинок
              'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{image}&nbsp;&nbsp;{delete}',
              'buttons' =>
                  [
                      'image' => function ($url, $model) {
+                         // отображение кнопки посредством выбора картинки-шрифта бутстрапа
+                         // замена url перехода при нажатии на кнопку imaje
+                         // передача id товара для дальнейшего сохранения в таблице продукты
                          return Html::a('<span class="glyphicon glyphicon-picture"></span>', Url::to(['/img/create', 'id' => $model->id]), [
-                             'title' => Yii::t('yii', 'Назначить роль')
+                             'title' => Yii::t('yii', 'Загрузить фото')
                          ]); }
                  ]
             ],

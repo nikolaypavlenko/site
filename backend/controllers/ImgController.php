@@ -8,6 +8,11 @@ use backend\models\ImgSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use app\models\UploadForm;
+
+
+
 
 /**
  * ImgController implements the CRUD actions for Img model.
@@ -61,21 +66,33 @@ class ImgController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id)
+    public function actionCreate()
     {
+        $id = $_GET['id']; //получение id продукта, отправленного с бэкенд/продакт/индекс
+        $images = Img::find()->where(['product_id' => $id])->all();
         $model = new Img();
-        $image = new Img::find()->where(['id' => $model->id])->all();
+        $model->image = "i"; //присваиваем любое значение антрибуту, иначе не сохраняется в бд. а данные знсим в БД перед сохранением файла, чтобы получить id in table img
 
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['create', 'id' => $id]);
+            //сохранение загружаемого файла
+        if ($model->load(Yii::$app->request->post()) ) {
+                $model->product_id = $id;
+                $model->save();
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if($model->file){
+                    $model->file->saveAs(Yii::getAlias('@frontend/web/images/') . md5($model->id) . '.' . $model->file->extension);
+                    $model->image = '/frontend/web/images/' . md5($model->id) . '.' . $model->file->extension;
+                }
+        $model->save(false); //что-бы повторно не валидировалось, иначе присваивается $model->image = "i"
+                //var_dump($model->file); die();
+        return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'image' => $image
+                'images' => $images
             ]);
         }
     }
+    
 
     /**
      * Updates an existing Img model.
@@ -85,13 +102,23 @@ class ImgController extends Controller
      */
     public function actionUpdate($id)
     {
+        
         $model = $this->findModel($id);
+        $model->image = "i"; //присваиваем любое значение антрибуту, иначе не сохраняется в бд. а данные зaнoсим в БД перед сохранением файла, чтобы получить id in table img
+        $images = Img::find()->where(['product_id' => $model->product_id])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if($model->file){
+                    $model->file->saveAs(Yii::getAlias('@frontend/web/images/') . md5($model->id) . '.' . $model->file->extension);
+                    $model->image = '/frontend/web/images/' . md5($model->id) . '.' . $model->file->extension;
+                }
+            $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'images' => $images,
             ]);
         }
     }

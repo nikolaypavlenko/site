@@ -13,6 +13,9 @@ use Yii;
  */
 class Img extends \yii\db\ActiveRecord
 {
+    public $file;
+
+
     /**
      * @inheritdoc
      */
@@ -30,6 +33,8 @@ class Img extends \yii\db\ActiveRecord
             [['image', 'product_id'], 'required'],
             [['product_id'], 'integer'],
             [['image'], 'string', 'max' => 255],
+            [['file'], 'file', 'extensions'=>'jpg, png']
+
         ];
     }
 

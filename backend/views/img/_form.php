@@ -10,9 +10,13 @@ use yii\widgets\ActiveForm;
 
 <div class="img-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
+	<!-- поле image делаем скрытым чтобы ничего не вводить, но надпись поля в представлении осталась -->
+    <?= $form->field($model, 'image')->textInput(['type' => "hidden"], ['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'file')->fileInput() ?>
+
 
 
     <div class="form-group">
@@ -21,8 +25,14 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
-    <? foreach($image as $img) :?>
-    	<?=$img->image ?>
-	<? endforeach ;?>
+
+
+	<?// вывод фото, загруженных ранее?>
+    <?php foreach($images as $img) :?>
+
+			<img style="width:200px" src='<?=$img->image ?>'  >
+
+	<?php endforeach ;?>
 
 </div>
+

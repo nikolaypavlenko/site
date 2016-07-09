@@ -78,12 +78,9 @@ class ProductController extends Controller
                     $relation = new RelationTag();
                     $relation ->tag_id = $item;
                     $relation ->product_id = $model->id;
-                    $relation -> save();
+                    $relation ->save();
                 }
-
-            //var_dump($model->tag_id);
-            //die();
-            //$model->save();
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

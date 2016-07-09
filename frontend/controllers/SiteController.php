@@ -139,8 +139,10 @@ class SiteController extends Controller
             return $this->render('detailnews', [
                 'news' => $news,
             ]);
+
     }
- public function actionNews()
+    
+    public function actionNews()
     {
         $news = News::find()->all();
 
