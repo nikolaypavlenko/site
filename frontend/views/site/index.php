@@ -15,7 +15,7 @@ $this->title = 'Смартфоны и телефоны';
             <div class="row">
                 <div><h4> Выбор по параметрам </h4></div><br>
                     <?php foreach ($tag as $item) :?>
-                         <?=$item->name ?><br>
+                         <a href="index.php?r=site/detailtag&id=<?=$item->id ?>"><?=$item->name ?></a><br>
                     <?php endforeach ;?>
             </div><br><br><br><br>
 

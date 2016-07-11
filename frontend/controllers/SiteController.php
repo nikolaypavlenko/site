@@ -8,7 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\data\Pagination;
-use common\models\LoginForm;
+use yii\data\ArrayDataProvider;
+use yii\data\DataProviderInterface;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -16,6 +17,9 @@ use frontend\models\ContactForm;
 use common\models\Tag;
 use common\models\Product;
 use common\models\News;
+use common\models\RelationTag;
+use common\models\LoginForm;
+
 
 
 /**
@@ -79,19 +83,14 @@ class SiteController extends Controller
     {
         $tag = Tag::find()->all();
         $news = News::find()->all();
-        $test = Tag::find()->where(['id' => 2])->one();
+        //$test = Tag::find()->where(['id' => 2])->one();
 
-        //var_dump( $test->product); die();
-       
+     
          // постраничный вывод товара
         $query = Product::find()->select('id, title_ru, description_ru, logo, price')->orderBy('id DESC')->where(['status'=> 1 ]);
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
         
-            
-            //var_dump($posts);
-            //die();
-
      
         return $this->render('index', [
                 'tag' => $tag,
@@ -125,11 +124,50 @@ class SiteController extends Controller
 
     public function actionDetail($id)
     {
+        //$tag = Tag::find()->all();
         $product = Product::find()->where(['id' => $id])->one();
+
+        //$tags = $product->tag;
+
+        //var_dump($tags); die();
+
 
             return $this->render('detail', [
                 'product' => $product,
+                //'tags' => $tags,
+                //'tag' => $tag,
+
             ]);
+    }
+
+    public function actionDetailtag($id)
+    {
+
+        $tag = Tag::find()->all(); // для левого сайдбара
+        $tags = Tag::find()->where(['id' => $id])->one(); // получение объекта объединенных таблиц
+
+        foreach ($tags->product as $product) { // получение массива продуктов со статусом 1, отбрасывая другие статусы
+            if($product->status == 1) {
+            $prod[] = $product;
+            }
+        }
+
+        //эксперимент вывода модели по 9 продуктов с расбивкой на страницы
+        // по результатам - вывод данных в таблице, но $provider это объект в отличие от массива $prod[] (предыдущий вариант вывода)
+        $provider = new ArrayDataProvider([ 
+                'allModels' => $prod,
+                'pagination' => [
+                'pageSize' => 9,
+                ],
+            ]);
+        $rows = $provider->getModels();
+        $count = $provider->getCount();
+        $totalCount = $provider->getTotalCount();
+
+            return $this->render('detailtag', [
+                'provider' => $provider,
+                'tag' => $tag,
+                ]);
     }
 
     public function actionDetailnews($id)
@@ -141,7 +179,7 @@ class SiteController extends Controller
             ]);
 
     }
-    
+
     public function actionNews()
     {
         $news = News::find()->all();

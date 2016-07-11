@@ -1,22 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use common\models\Product;
-use backend\models\ProductSearch;
+use common\models\Profile;
+use frontend\models\ProfileSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\Tag;
-use common\models\RelationTag;
-
-
 
 /**
- * ProductController implements the CRUD actions for Product model.
+ * ProfileController implements the CRUD actions for Profile model.
  */
-class ProductController extends Controller
+class ProfileController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,12 +30,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Lists all Product models.
+     * Lists all Profile models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
+        $searchModel = new ProfileSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +45,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Displays a single Product model.
+     * Displays a single Profile model.
      * @param integer $id
      * @return mixed
      */
@@ -61,37 +57,25 @@ class ProductController extends Controller
     }
 
     /**
-     * Creates a new Product model.
+     * Creates a new Profile model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Product();
-        $tag = Tag::find()->all();
+        $model = new Profile();
 
-        if ($model->load(Yii::$app->request->post()) ) {
-                
-                $model->save();
-                //сохранение массива тегов через форич
-                foreach ($model->tag_id as $item) {
-                    $relation = new RelationTag();
-                    $relation ->tag_id = $item;
-                    $relation ->product_id = $model->id;
-                    $relation ->save();
-                }
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'tag' => $tag,
             ]);
         }
     }
 
     /**
-     * Updates an existing Product model.
+     * Updates an existing Profile model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,30 +83,18 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $tag = Tag::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) ) {
-                
-                $model->save();
-                //сохранение массива тегов через форич
-                foreach ($model->tag_id as $item) {
-                    $relation = new RelationTag();
-                    $relation ->tag_id = $item;
-                    $relation ->product_id = $model->id;
-                    $relation ->save();
-                }
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'tag' => $tag,
             ]);
         }
     }
 
     /**
-     * Deletes an existing Product model.
+     * Deletes an existing Profile model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -135,15 +107,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Profile model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Product the loaded model
+     * @return Profile the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = Profile::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

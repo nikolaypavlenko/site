@@ -22,4 +22,8 @@ return [
         ],
     ],
     'params' => $params,
+    
+    'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+        ],
 ];

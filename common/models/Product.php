@@ -66,9 +66,23 @@ class Product extends \yii\db\ActiveRecord
             'date_update' => 'Date Update',
         ];
     }
+
+   public function getRelationTags()
+    {
+        return $this->hasMany(RelationTag::className(), ['product_id' => 'id']);
+    }
+
+    public function getTag()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+            ->via('relationTags');
+    }
 }
 
- /**Yii::$app->db->createCommand()->batchInsert
+
+
+ 
+     /**Yii::$app->db->createCommand()->batchInsert
         ('product', ['title_ru', 'title_eng', 'description_ru', 'description_eng', 'logo', 'tag_id', 'price', 'account', 'status', 'date_create', 'date_update'],
            [ ['Xone' , 
             'Xone', 
