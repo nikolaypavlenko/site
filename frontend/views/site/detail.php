@@ -1,4 +1,7 @@
-
+<?php 
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+?>
 
     <div class="body-content">
 
@@ -23,6 +26,25 @@
 		                <?php endforeach ;?>
 
 		</div>
+
+		<div>
+
+			  <?php $form = ActiveForm::begin(); ?>
+
+			    <?= $form->field($comment, 'title')->textInput() ?>
+
+			    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true]) ?>
+
+
+			    <div class="form-group">
+			        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+			    </div>
+
+			    <?php ActiveForm::end(); ?>
+
+		</div>
+
+
 
 	</div>
 

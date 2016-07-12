@@ -32,7 +32,7 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'comment', 'product_id', 'data', 'parent_id', 'user_id', 'status_id'], 'required'],
+            [['title', 'comment'], 'required'],
             [['comment'], 'string'],
             [['product_id', 'parent_id', 'user_id', 'status_id'], 'integer'],
             [['data'], 'safe'],

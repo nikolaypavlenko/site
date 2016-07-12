@@ -19,6 +19,8 @@ use common\models\Product;
 use common\models\News;
 use common\models\RelationTag;
 use common\models\LoginForm;
+use common\models\Comment;
+
 
 
 
@@ -124,6 +126,21 @@ class SiteController extends Controller
 
     public function actionDetail($id)
     {
+        $comment = new Comment;
+
+        
+        if ($comment->load(Yii::$app->request->post())) {
+                $comment->product_id = $_GET['id'];
+                if(!Yii::$app->user->isGuest) {
+                    $comment->user_id = Yii::$app->user->id;
+                }
+                $comment->save();
+        }
+
+        //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
+
+
+
         //$tag = Tag::find()->all();
         $product = Product::find()->where(['id' => $id])->one();
 
@@ -136,6 +153,7 @@ class SiteController extends Controller
                 'product' => $product,
                 //'tags' => $tags,
                 //'tag' => $tag,
+                'comment' => $comment,
 
             ]);
     }
@@ -168,6 +186,15 @@ class SiteController extends Controller
                 'provider' => $provider,
                 'tag' => $tag,
                 ]);
+
+/*$customers = Customer::find()
+    ->select('customer.*')
+    ->leftJoin('order', '`order`.`customer_id` = `customer`.`id`')
+    ->where(['order.status' => Order::STATUS_ACTIVE])
+    ->with('orders')
+    ->all();*/
+
+            
     }
 
     public function actionDetailnews($id)
