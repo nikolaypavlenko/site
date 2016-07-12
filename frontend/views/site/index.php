@@ -29,8 +29,6 @@ $this->title = 'Смартфоны и телефоны';
 
 
 
-
-
         <div class="col-md-10 col-lg-10">
     
 
@@ -41,7 +39,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['0'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['0']->id ?>"><b><h3><center><?=$posts['0']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['0']->description_ru ?></em><br>
+                        <img src="<?=$posts['0']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['0']->logo ?></span></b><br>
                         Цена: <?=$posts['0']->price ?> грн. <br><br>
                         <hr>
@@ -51,7 +49,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['1'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['1']->id ?>"><b><h3><center><?=$posts['1']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['1']->description_ru ?></em><br>
+                        <img src="<?=$posts['1']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['1']->logo ?></span></b><br>
                         Цена: <?=$posts['1']->price ?> грн. <br><br>
                         <hr>
@@ -61,7 +59,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['2'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['2']->id ?>"><b><h3><center><?=$posts['2']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['2']->description_ru ?></em><br>
+                        <img src="<?=$posts['2']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['2']->logo ?></span></b><br>
                         Цена: <?=$posts['2']->price ?> грн. <br><br>
                         <hr>
@@ -74,7 +72,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                      <?php if (!empty($posts['3'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['3']->id ?>"><b><h3><center><?=$posts['3']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['3']->description_ru ?></em><br>
+                        <img src="<?=$posts['3']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['3']->logo ?></span></b><br>
                         Цена: <?=$posts['3']->price ?> грн. <br><br>
                         <hr>
@@ -84,7 +82,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['4'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['4']->id ?>"><b><h3><center><?=$posts['4']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['4']->description_ru ?></em><br>
+                        <img src="<?=$posts['4']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['4']->logo ?></span></b><br>
                         Цена: <?=$posts['4']->price ?> грн. <br><br>
                         <hr>
@@ -94,7 +92,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['5'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['5']->id ?>"><b><h3><center><?=$posts['5']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['5']->description_ru ?></em><br>
+                        <img src="<?=$posts['5']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['5']->logo ?></span></b><br>
                         Цена: <?=$posts['5']->price ?> грн. <br><br>
                         <hr>
@@ -107,7 +105,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['6'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['6']->id ?>"><b><h3><center><?=$posts['6']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['6']->description_ru ?></em><br>
+                        <img src="<?=$posts['6']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['6']->logo ?></span></b><br>
                         Цена: <?=$posts['6']->price ?> грн. <br><br>
                         <hr>
@@ -117,7 +115,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['7'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['7']->id ?>"><b><h3><center><?=$posts['7']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['7']->description_ru ?></em><br>
+                        <img src="<?=$posts['7']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['7']->logo ?></span></b><br>
                         Цена: <?=$posts['7']->price ?> грн. <br><br>
                         <hr>
@@ -127,7 +125,7 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($posts['8'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$posts['8']->id ?>"><b><h3><center><?=$posts['8']->title_ru ?></center></h3></b></a>
-                        <em> <?=$posts['8']->description_ru ?></em><br>
+                        <img src="<?=$posts['8']->img['0']['image'] ?>">
                         <b>Модель: <span style="color:blue"><?=$posts['8']->logo ?></span></b><br>
                         Цена: <?=$posts['8']->price ?> грн. <br><br>
                         <hr>

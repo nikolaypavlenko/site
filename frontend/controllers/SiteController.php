@@ -23,7 +23,6 @@ use common\models\Comment;
 
 
 
-
 /**
  * Site controller
  */
@@ -85,21 +84,23 @@ class SiteController extends Controller
     {
         $tag = Tag::find()->all();
         $news = News::find()->all();
-        //$test = Tag::find()->where(['id' => 2])->one();
-
      
          // постраничный вывод товара
-        $query = Product::find()->select('id, title_ru, description_ru, logo, price')->orderBy('id DESC')->where(['status'=> 1 ]);
+        $query = Product::find()
+                ->select('product.*')
+                ->leftJoin('img', '`img`.`product_id` = `product`.`id`')
+                ->where(['product.status' => 1])
+                ->with('img'); // присоединяемая таблица
+                //->all();
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
-        
+
      
         return $this->render('index', [
                 'tag' => $tag,
                 'posts' => $posts,
                 'pages' => $pages,
                 'news' => $news,
-
             ]);
     }
 
@@ -163,16 +164,16 @@ class SiteController extends Controller
 
         $tag = Tag::find()->all(); // для левого сайдбара
         $tags = Tag::find()->where(['id' => $id])->one(); // получение объекта объединенных таблиц
-
+/*
         foreach ($tags->product as $product) { // получение массива продуктов со статусом 1, отбрасывая другие статусы
             if($product->status == 1) {
             $prod[] = $product;
             }
         }
-
+*/
         //эксперимент вывода модели по 9 продуктов с расбивкой на страницы
         // по результатам - вывод данных в таблице, но $provider это объект в отличие от массива $prod[] (предыдущий вариант вывода)
-        $provider = new ArrayDataProvider([ 
+        /*$provider = new ArrayDataProvider([ 
                 'allModels' => $prod,
                 'pagination' => [
                 'pageSize' => 9,
@@ -181,7 +182,7 @@ class SiteController extends Controller
         $rows = $provider->getModels();
         $count = $provider->getCount();
         $totalCount = $provider->getTotalCount();
-
+*/
             return $this->render('detailtag', [
                 'provider' => $provider,
                 'tag' => $tag,
