@@ -69,21 +69,20 @@ class ImgController extends Controller
     public function actionCreate()
     {
         $id = $_GET['id']; //получение id продукта, отправленного с бэкенд/продакт/индекс
-        $images = Img::find()->where(['product_id' => $id])->all(); // выбор всех фото по продукту 
-        $model = new Img();
-        $foto = time(); // вводим переменную, которую закодирует мд5 при сохранении
+         $images = Img::find()->where(['product_id' => $id])->all(); // выбор всех фото по продукту 
+         $model = new Img();
+         $foto = time(); // вводим переменную, которую закодирует мд5 при сохранении
 
         //сохранение загружаемого файла
         if ($model->load(Yii::$app->request->post()) ) {
-                $model->product_id = $id;
-                //$model->save();
-                $model->file = UploadedFile::getInstance($model, 'file');
-                if($model->file){
-                    $model->file->saveAs(Yii::getAlias('@frontend/web/images/') . md5($foto) . '.' . $model->file->extension);
-                    $model->image = '/frontend/web/images/' . md5($foto) . '.' . $model->file->extension;
+                 $model->product_id = $id;
+                 $model->file = UploadedFile::getInstance($model, 'file');
+                 if($model->file){
+                     $model->file->saveAs(Yii::getAlias('@frontend/web/images/') . md5($foto) . '.' . $model->file->extension);
+                     $model->image = '/frontend/web/images/' . md5($foto) . '.' . $model->file->extension;
                 }
         $model->save(false); //что-бы повторно не валидировалось, иначе присваивается $model->image = "i"
-        return $this->redirect(['view', 'id' => $model->id]);
+         return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -103,21 +102,21 @@ class ImgController extends Controller
     {
         
         $model = $this->findModel($id);
-        $foto = time(); // вводим переменную, которую закодирует мд5 при сохранении
+         $foto = time(); // вводим переменную, которую закодирует мд5 при сохранении
         $images = Img::find()->where(['product_id' => $model->product_id])->all();
-        $del = $model->image; // file for delete
+         $del = $model->image; // file for delete
         
         if ($model->load(Yii::$app->request->post()) ) {
                 $model->file = UploadedFile::getInstance($model, 'file');
-                if($model->file){
-                    $model->file->saveAs(Yii::getAlias('@frontend/web/images/') . md5($foto) . '.' . $model->file->extension);
-                    $model->image = '/frontend/web/images/' . md5($foto) . '.' . $model->file->extension;
+                 if($model->file){
+                     $model->file->saveAs(Yii::getAlias('@frontend/web/images/') . md5($foto) . '.' . $model->file->extension);
+                     $model->image = '/frontend/web/images/' . md5($foto) . '.' . $model->file->extension;
                 }
             $model->save(false);
-            //удаление файла с фото на сайте
-            if($model->save(false)) {
-                    unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
-            }
+             //удаление файла с фото на сайте
+              if($model->save(false)) {
+                     unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
+             }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -135,10 +134,10 @@ class ImgController extends Controller
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);        
-        $del = $model->image; // file for delete
-        $this->findModel($id)->delete();
-        unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
+         $model = $this->findModel($id);        
+         $del = $model->image; // file for delete
+         $this->findModel($id)->delete();
+         unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
 
         return $this->redirect(['index']);
     }
