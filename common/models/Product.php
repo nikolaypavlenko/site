@@ -22,8 +22,7 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
-    
-    
+   
     /**
      * @inheritdoc
      */
@@ -77,6 +76,12 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
             ->via('relationTags');
     }
+
+    public function getImg()
+    {
+        return $this->hasMany(Img::className(), ['product_id' => 'id']);
+    }
+
 }
 
 

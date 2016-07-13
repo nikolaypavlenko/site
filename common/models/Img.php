@@ -30,7 +30,7 @@ class Img extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['image', 'product_id'], 'required'],
+            [['product_id'], 'required'],
             [['product_id'], 'integer'],
             [['image'], 'string', 'max' => 255],
             [['file'], 'file', 'extensions'=>'jpg, png']
@@ -48,5 +48,10 @@ class Img extends \yii\db\ActiveRecord
             'image' => 'Image',
             'product_id' => 'Product ID',
         ];
+    }
+
+     public function getProduct()
+    {
+        return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 }

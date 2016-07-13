@@ -13,7 +13,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
 	<!-- поле image делаем скрытым чтобы ничего не вводить, но надпись поля в представлении осталась -->
-    <?= $form->field($model, 'image')->textInput(['type' => "hidden"], ['maxlength' => true]) ?>
 
     <?= $form->field($model, 'file')->fileInput() ?>
 

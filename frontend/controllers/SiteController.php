@@ -19,6 +19,7 @@ use common\models\Product;
 use common\models\News;
 use common\models\RelationTag;
 use common\models\LoginForm;
+use common\models\Comment;
 
 
 
@@ -83,21 +84,23 @@ class SiteController extends Controller
     {
         $tag = Tag::find()->all();
         $news = News::find()->all();
-        //$test = Tag::find()->where(['id' => 2])->one();
-
      
          // постраничный вывод товара
-        $query = Product::find()->select('id, title_ru, description_ru, logo, price')->orderBy('id DESC')->where(['status'=> 1 ]);
+        $query = Product::find()
+                ->select('product.*')
+                ->leftJoin('img', '`img`.`product_id` = `product`.`id`')
+                ->where(['product.status' => 1])
+                ->with('img'); // присоединяемая таблица
+                //->all();
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
-        
+
      
         return $this->render('index', [
                 'tag' => $tag,
                 'posts' => $posts,
                 'pages' => $pages,
                 'news' => $news,
-
             ]);
     }
 
@@ -124,18 +127,35 @@ class SiteController extends Controller
 
     public function actionDetail($id)
     {
+        $comment = new Comment;
+
+        
+        if ($comment->load(Yii::$app->request->post())) {
+                $comment->product_id = $_GET['id'];
+                if(!Yii::$app->user->isGuest) {
+                    $comment->user_id = Yii::$app->user->id;
+                }
+                $comment->save();
+        }
+
+        //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
+
+
+
         //$tag = Tag::find()->all();
         $product = Product::find()->where(['id' => $id])->one();
 
+        
         //$tags = $product->tag;
 
-        //var_dump($tags); die();
+        //var_dump($product->img); die();
 
 
             return $this->render('detail', [
                 'product' => $product,
                 //'tags' => $tags,
                 //'tag' => $tag,
+                'comment' => $comment,
 
             ]);
     }
@@ -145,16 +165,16 @@ class SiteController extends Controller
 
         $tag = Tag::find()->all(); // для левого сайдбара
         $tags = Tag::find()->where(['id' => $id])->one(); // получение объекта объединенных таблиц
-
+/*
         foreach ($tags->product as $product) { // получение массива продуктов со статусом 1, отбрасывая другие статусы
             if($product->status == 1) {
             $prod[] = $product;
             }
         }
-
+*/
         //эксперимент вывода модели по 9 продуктов с расбивкой на страницы
         // по результатам - вывод данных в таблице, но $provider это объект в отличие от массива $prod[] (предыдущий вариант вывода)
-        $provider = new ArrayDataProvider([ 
+        /*$provider = new ArrayDataProvider([ 
                 'allModels' => $prod,
                 'pagination' => [
                 'pageSize' => 9,
@@ -163,11 +183,20 @@ class SiteController extends Controller
         $rows = $provider->getModels();
         $count = $provider->getCount();
         $totalCount = $provider->getTotalCount();
-
+*/
             return $this->render('detailtag', [
                 'provider' => $provider,
                 'tag' => $tag,
                 ]);
+
+/*$customers = Customer::find()
+    ->select('customer.*')
+    ->leftJoin('order', '`order`.`customer_id` = `customer`.`id`')
+    ->where(['order.status' => Order::STATUS_ACTIVE])
+    ->with('orders')
+    ->all();*/
+
+            
     }
 
     public function actionDetailnews($id)

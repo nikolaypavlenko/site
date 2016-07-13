@@ -102,9 +102,9 @@ class ImgController extends Controller
     {
         
         $model = $this->findModel($id);
-         $foto = time(); // вводим переменную, которую закодирует мд5 при сохранении
+        $foto = time(); // вводим переменную, которую закодирует мд5 при сохранении
         $images = Img::find()->where(['product_id' => $model->product_id])->all();
-         $del = $model->image; // file for delete
+        $del = $model->image; // file for delete
         
         if ($model->load(Yii::$app->request->post()) ) {
                 $model->file = UploadedFile::getInstance($model, 'file');
@@ -115,7 +115,11 @@ class ImgController extends Controller
             $model->save(false);
              //удаление файла с фото на сайте
               if($model->save(false)) {
-                     unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
+                    if (is_file($_SERVER['DOCUMENT_ROOT'] . $del)) {
+                         unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
+                    } else {
+                         throw new NotFoundHttpException('The requested page does not exist.');
+                    }
              }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -134,11 +138,14 @@ class ImgController extends Controller
      */
     public function actionDelete($id)
     {
-         $model = $this->findModel($id);        
-         $del = $model->image; // file for delete
-         $this->findModel($id)->delete();
-         unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
-
+        $model = $this->findModel($id);        
+        $del = $model->image; // file for delete
+        $this->findModel($id)->delete();
+        if (is_file($_SERVER['DOCUMENT_ROOT'] . $del)) {
+        unlink($_SERVER['DOCUMENT_ROOT'] . $del); //указываем полный путь к файлу на сервере
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
         return $this->redirect(['index']);
     }
 
