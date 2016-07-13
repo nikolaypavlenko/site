@@ -140,21 +140,11 @@ class SiteController extends Controller
 
         //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
 
-
-
-        //$tag = Tag::find()->all();
         $product = Product::find()->where(['id' => $id])->one();
-
-        
-        //$tags = $product->tag;
-
-        //var_dump($product->img); die();
 
 
             return $this->render('detail', [
                 'product' => $product,
-                //'tags' => $tags,
-                //'tag' => $tag,
                 'comment' => $comment,
 
             ]);
@@ -164,39 +154,25 @@ class SiteController extends Controller
     {
 
         $tag = Tag::find()->all(); // для левого сайдбара
-        $tags = Tag::find()->where(['id' => $id])->one(); // получение объекта объединенных таблиц
-/*
-        foreach ($tags->product as $product) { // получение массива продуктов со статусом 1, отбрасывая другие статусы
-            if($product->status == 1) {
-            $prod[] = $product;
-            }
-        }
-*/
-        //эксперимент вывода модели по 9 продуктов с расбивкой на страницы
-        // по результатам - вывод данных в таблице, но $provider это объект в отличие от массива $prod[] (предыдущий вариант вывода)
-        /*$provider = new ArrayDataProvider([ 
-                'allModels' => $prod,
-                'pagination' => [
-                'pageSize' => 9,
-                ],
-            ]);
-        $rows = $provider->getModels();
-        $count = $provider->getCount();
-        $totalCount = $provider->getTotalCount();
-*/
+
+        $query = Tag::find($id)
+                ->select (['*'])
+                //->from(`product`, `image`)
+                ->leftJoin('relation_tag', '`relation_tag`.`tag_id` = `tag`.`id`')
+                ->leftJoin('product', '`relation_tag`.`product_id` = `product`.`id`')
+                ->leftJoin('img', '`img`.`product_id` = `product`.`id`')
+                ->where("`tag`.`id` = '{$id}' AND `product`.`status` = 1 ")
+                //->with('product')
+                ->asArray();
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
+        $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
+
             return $this->render('detailtag', [
-                'provider' => $provider,
+                'posts' => $posts,
+                'pages' => $pages,
                 'tag' => $tag,
+                'tags' => $tags
                 ]);
-
-/*$customers = Customer::find()
-    ->select('customer.*')
-    ->leftJoin('order', '`order`.`customer_id` = `customer`.`id`')
-    ->where(['order.status' => Order::STATUS_ACTIVE])
-    ->with('orders')
-    ->all();*/
-
-            
     }
 
     public function actionDetailnews($id)
