@@ -28,6 +28,7 @@ use yii\widgets\ActiveForm;
 
 		</div>
 
+		
 	</div>
 
 		<div class="col-md-9 col-lg-9">
@@ -51,9 +52,3 @@ use yii\widgets\ActiveForm;
 
 
 	
-
-
-
-
-<?php //var_dump($product->tag);
-

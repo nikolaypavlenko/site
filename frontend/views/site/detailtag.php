@@ -35,7 +35,11 @@ $this->title = 'Смартфоны и телефоны';
                 <div class="col-md-4 col-lg-4">
                     <?php if (!empty($provider['0'])) : ?>
                         <a href="index.php?r=site/detail&id=<?=$provider['0']->id ?>"><b><h3><center><?=$provider['0']->title_ru ?></center></h3></b></a>
+<<<<<<< HEAD
                         <em> <?=$provider['0']->img->image ?></em><br>
+=======
+                        <em> <?=$provider['0']->description_ru ?></em><br>
+>>>>>>> 6306f818c00484176d028fe9e584cbf77acaa5c0
                         <b>Модель: <span style="color:blue"><?=$provider['0']->logo ?></span></b><br>
                         Цена: <?=$provider['0']->price ?> грн. <br><br>
                         <hr>
