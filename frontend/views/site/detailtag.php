@@ -22,9 +22,11 @@ $this->title = 'Смартфоны и телефоны';
 
    
         <div class="col-md-10 col-lg-10">
+            
 
                     <?php if (!empty($posts)) : ?>
-                        <?php $i = 0 ;?>
+                                <?php $i = 0 ;?>
+                        
                                 <?php foreach($posts as  $item) :?>
                                         <?php  $i++ ;?>
                                             <?php if($i == 1 or $i == 4 or $i == 7) {

@@ -32,7 +32,7 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'comment'], 'required'],
+            [['comment'], 'required'],
             [['comment'], 'string'],
             [['product_id', 'parent_id', 'user_id', 'status_id'], 'integer'],
             [['data'], 'safe'],
@@ -48,7 +48,7 @@ class Comment extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'comment' => 'Comment',
+            'comment' => 'Отзыв',
             'product_id' => 'Product ID',
             'data' => 'Data',
             'parent_id' => 'Parent ID',

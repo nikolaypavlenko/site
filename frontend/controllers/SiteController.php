@@ -127,27 +127,58 @@ class SiteController extends Controller
 
     public function actionDetail($id)
     {
-        $comment = new Comment;
-
         
+        $product = Product::find()->where(['id' => $id])->one();
+        
+        $comment = new Comment;
         if ($comment->load(Yii::$app->request->post())) {
                 $comment->product_id = $_GET['id'];
+                $comment->parent_id = $_GET['parent'];
+
                 if(!Yii::$app->user->isGuest) {
                     $comment->user_id = Yii::$app->user->id;
-                }
+                    }
                 $comment->save();
+                unset($_GET['parent']);    // попытка удалить гет, но не сработало
         }
-
+        unset($comment->comment);        // сброс значения атрибута, чтобы не выводился повторно в форме
         //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
 
-        $product = Product::find()->where(['id' => $id])->one();
+        $paren = $_GET['parent']; // если есть ГЕТ парент, то дальнейшая логика в представлении
+
+        $posts = Comment::find()
+                    ->select('`comment`.* , `user`.`username`')
+                    ->leftJoin('user' , '`user`.`id` = `comment`.`user_id`')
+                    ->where(['product_id' => $id])
+                    //->orderBy(['`comment`.`id`' => SORT_DESK])
+                    ->asArray()
+                    ->all();
+
+        /*$post_childs = Comment::find()
+                    ->select('first.id, first.comment, first.product_id, first.data, first.parent_id, second.id, second.comment, second.data ')
+                    ->from('comment first, comment second')
+                    //->leftJoin('user , `user`.`id` = `second`.`user_id`')
+                    ->where(['product_id' => $id])
+                    ->where('first.id = second.parent_id ')
+
+                    //->orderBy(['`comment`.`id`' => SORT_DESK])
+                    //->asArray()
+                    ->all();*/
+        //var_dump($post_child); die();
 
 
             return $this->render('detail', [
-                'product' => $product,
-                'comment' => $comment,
+                    'product' => $product,
+                    'comment' => $comment,
+                    'posts' => $posts,
+                    'paren' => $paren,
+                    'post_childs' => $post_childs
 
             ]);
+
+            // var_dump(Yii::$app->user->identity->username);
+            // var_dump(Yii::$app->user->identity->status); 
+
     }
 
     public function actionDetailtag($id)
