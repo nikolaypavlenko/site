@@ -132,53 +132,37 @@ class SiteController extends Controller
         
         $comment = new Comment;
         if ($comment->load(Yii::$app->request->post())) {
-                $comment->product_id = $_GET['id'];
-                $comment->parent_id = $_GET['parent'];
 
                 if(!Yii::$app->user->isGuest) {
                     $comment->user_id = Yii::$app->user->id;
+                    $comment->product_id = $_GET['id'];
+                    } else {
+                        $message = "Для отправки сообщения необходимo ввойти в кабинет";
                     }
                 $comment->save();
-                unset($_GET['parent']);    // попытка удалить гет, но не сработало
+                unset($_GET['parent']);    // удаление гета, чтобы окно ответа на комментарий не появлялось
         }
-        unset($comment->comment);        // сброс значения атрибута, чтобы не выводился повторно в форме
+     
         //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
+        
+        $paren = $_GET['parent']; // если есть ГЕТ парент, то в представлении открывается окно для ввода комментов
 
-        $paren = $_GET['parent']; // если есть ГЕТ парент, то дальнейшая логика в представлении
+        $comments = Comment::find()
+                ->where (['product_id' => $id, 'parent_id' => 0])
+                ->all();
 
-        $posts = Comment::find()
-                    ->select('`comment`.* , `user`.`username`')
-                    ->leftJoin('user' , '`user`.`id` = `comment`.`user_id`')
-                    ->where(['product_id' => $id])
-                    //->orderBy(['`comment`.`id`' => SORT_DESK])
-                    ->asArray()
-                    ->all();
+        $childcomments = Comment::find()
+                ->where (['product_id' => $id])
+                ->all();
 
-        /*$post_childs = Comment::find()
-                    ->select('first.id, first.comment, first.product_id, first.data, first.parent_id, second.id, second.comment, second.data ')
-                    ->from('comment first, comment second')
-                    //->leftJoin('user , `user`.`id` = `second`.`user_id`')
-                    ->where(['product_id' => $id])
-                    ->where('first.id = second.parent_id ')
-
-                    //->orderBy(['`comment`.`id`' => SORT_DESK])
-                    //->asArray()
-                    ->all();*/
-        //var_dump($post_child); die();
-
-
-            return $this->render('detail', [
-                    'product' => $product,
-                    'comment' => $comment,
-                    'posts' => $posts,
-                    'paren' => $paren,
-                    'post_childs' => $post_childs
-
+        return $this->render('detail', [
+                'product' => $product,
+                'comments' => $comments,
+                'paren' => $paren,
+                'childcomments' => $childcomments,
+                'comment' => new Comment,
+                'message' => $message
             ]);
-
-            // var_dump(Yii::$app->user->identity->username);
-            // var_dump(Yii::$app->user->identity->status); 
-
     }
 
     public function actionDetailtag($id)

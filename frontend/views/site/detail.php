@@ -11,9 +11,7 @@ use yii\widgets\ActiveForm;
 
 		</div>
 
-
 		<div class="col-md-9 col-lg-9">
-
 
 				<h1 style="color:grey"><?=$product->title_ru ?></h1><br>
 
@@ -26,60 +24,67 @@ use yii\widgets\ActiveForm;
 						<?php foreach ($product->tag as $item) :?>
 		                         <a href="index.php?r=site/detailtag&id=<?=$item->id?>"><?=$item->name?>&nbsp&nbsp</a>   
 		                <?php endforeach ;?>
-				<hr>
-
-		
-			<?php foreach ($posts as $post) :?>
-
+	
+			<?php if(!empty($comments)) :?> 
+  				<?php foreach ($comments as $comment) :?>
+					<hr>
 					<div class='row'>
-						<div class="col-md-6 col-lg-6">
-								<b>автор: <?echo $post['username'] ?> </b>
-						</div>
-
-						<div class="col-md-6 col-lg-6" align="right">
-								<?echo $post['data'] ?> 
-						</div>
+						<div class="col-md-6 col-lg-6"> <b>автор: <?=$comment->user->username ?> </b> </div>
+						<div class="col-md-6 col-lg-6" align="right"> <?=$comment->data ?>  </div>
 					</div>
 					<div class='row'>
-						<div class="col-md-11 col-lg-11">
-							<em><?echo $post['comment'] ?></em>
-						</div>
-						<div class="col-md-1 col-lg-1">
-								<a href="index.php?r=site/detail&id=<?=$post['product_id']?>&parent=<?=$post['id']?>">
-									<button type="button" class="btn btn-default btn-xs">ответить</button>
-								</a>
-						</div>
+						<div class="col-md-11 col-lg-11"> <em><?=$comment->comment ?></em> </div>
+						<div class="col-md-1 col-lg-1"> <a href="index.php?r=site/detail&id=<?=$comment->product_id?>&parent=<?=$comment->id?>"> 
+									<button type="button" class="btn btn-default btn-xs">ответить</button> 	</a> </div>
+					</div>
 
-						
-							<?php if (!empty($paren) AND $paren == $post['id']) : ?> <!-- вывод комментария к отзыву -->
-
-								 	<?php $form = ActiveForm::begin(); ?>
-								    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true]) ?>
-								    <div class="form-group">
-								        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-								    </div>
-								    <?php ActiveForm::end(); ?>
-
+					<?php foreach ($childcomments as $child) :?> 
+							
+							<?php if ($child->parent_id == $comment->id) : ?> <!-- вывод комментария к отзыву -->
+									<div class='row'>	 			
+										<div class="col-md-2 col-lg-2">		</div>			
+										<div class="col-md-5 col-lg-5">	<hr> 	<b>автор: <?=$child->user->username ?> </b> </div>
+										<div class="col-md-5 col-lg-5" align="right"> <hr> 	<?=$child->data ?>  </div>
+									</div>
+									<div class='row'>
+										<div class="col-md-2 col-lg-2">	</div>	
+										<div class="col-md-10 col-lg-10">	<em> <?=$child->comment ?> </em></div>
+									</div>
 							<?php endif; ?>
+					<?php endforeach ;?>
 
-					</div><hr>
-			<?php endforeach ;?>
-
-		
-
-		
+					<?php if (!empty($paren) AND $paren == $comment->id) : ?>
+							<div class='row'>
+								<div class="col-md-2 col-lg-2">	</div>	
+								<div class="col-md-10 col-lg-10">
+									<?php $form = ActiveForm::begin(); ?>
+									    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true ]) ?>
+									    <?= $form->field($comment, 'parent_id')->hiddenInput(['value' => $comment->id])->label(false) ?>
+									    <div class="form-group">
+									        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', 
+									        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+									    </div>
+									<?php ActiveForm::end(); ?>
+								</div>
+							</div>
+					<?php endif; ?>
+				<?php endforeach ;?>
+			<?php endif; ?>
 			<br><br>
-			  <?php $form = ActiveForm::begin(); ?>
+		        
+	
+	        <?php $form = ActiveForm::begin(); ?>
 
-			    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true]) ?>
+		    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true]) ?>
 
-			    <div class="form-group">
-			        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-			    </div>
-
-			    <?php ActiveForm::end(); ?>
+		    <div class="form-group">
+		        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		    </div>
+			<span style="color:red"> <?=$message ?> </span>
+		    <?php ActiveForm::end(); ?>
 
 		</div>
+	</div>
 
 
 

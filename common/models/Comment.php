@@ -48,12 +48,22 @@ class Comment extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'comment' => 'Отзыв',
+            'comment' => 'Ваш отзыв',
             'product_id' => 'Product ID',
             'data' => 'Data',
             'parent_id' => 'Parent ID',
             'user_id' => 'User ID',
             'status_id' => 'Status ID',
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getChildComment() 
+    {
+        return $this->hasMany(Comment::className(), ['parent_id' => 'id']);
     }
 }
