@@ -145,8 +145,8 @@ class SiteController extends Controller
      
         //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
         
-        $paren = $_GET['parent']; // если есть ГЕТ парент, то в представлении открывается окно для ввода комментов
-
+        $paren = $_GET['parent']; // если есть ГЕТ парент, то в представлении открывается окно для ввода комментов на коммент
+        
         $comments = Comment::find()
                 ->where (['product_id' => $id, 'parent_id' => 0])
                 ->all();
@@ -155,13 +155,14 @@ class SiteController extends Controller
                 ->where (['product_id' => $id])
                 ->all();
 
+
         return $this->render('detail', [
                 'product' => $product,
                 'comments' => $comments,
                 'paren' => $paren,
                 'childcomments' => $childcomments,
                 'comment' => new Comment,
-                'message' => $message
+                'message' => $message,
             ]);
     }
 
@@ -169,7 +170,7 @@ class SiteController extends Controller
     {
 
         $tag = Tag::find()->all(); // для левого сайдбара
-
+        
         $query = Tag::find($id)
                 ->select (['*'])
                 //->from(`product`, `image`)
@@ -186,7 +187,7 @@ class SiteController extends Controller
                 'posts' => $posts,
                 'pages' => $pages,
                 'tag' => $tag,
-                'tags' => $tags
+                'tags' => $tags,
                 ]);
     }
 
@@ -200,6 +201,23 @@ class SiteController extends Controller
 
     }
 
+     public function actionAdd($id) {
+
+            $session = Yii::$app->session;
+            $session->open();
+
+            $basket = $session['basket'];
+            $basket[] = $id;
+            $session['basket'] = $basket;
+
+
+            var_dump($session['basket']);
+          
+          die();
+
+
+    }
+    
     public function actionNews()
     {
         $news = News::find()->all();

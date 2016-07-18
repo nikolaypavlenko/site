@@ -40,13 +40,17 @@ $this->title = 'Смартфоны и телефоны';
 
                                         <div class="col-md-4 col-lg-4">
                                             <?php if (!empty($item)) : ?>
-                                                <a href="index.php?r=site/detail&id=<?=$item->id ?>"><b><h3><center><?=$item->title_ru ?></center></h3></b></a>
+                                                <b><h3><center><?=$item->title_ru ?></center></h3></b>
                                                 
                                                 <img style="height:200px" src="<?=$item->img['0']['image'] ?>"><br><br>
                                                 
                                                 <b>Модель: <span style="color:blue"><?=$item->logo ?></span></b><br>
                                                 
                                                 Цена: <?=$item->price ?> грн. <br><br>
+                                                <button type="button" class="btn btn-warning"><acronym title="в корзину">
+                                                        <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button>
+                                                <a href="index.php?r=site/detail&id=<?=$item->id ?>">
+                                                        <button type="button" class="btn btn-info">тех. характеристики</button></a>
                                                 <hr>
                                             <?php endif; ?>
                                         </div>
