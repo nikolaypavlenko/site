@@ -24,3 +24,7 @@ SELECT first.id, first.comment, first.product_id, first.data, first.parent_id, s
                     //->asArray()
                     ->all();*/
         //var_dump($post_child); die();
+
+
+
+            $products = Product::findAll($session['basket']); выборка с БД массива с значениями  массива session['basket']

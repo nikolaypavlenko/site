@@ -109,3 +109,9 @@ a.desc:after {
 .nav > li > form > button:hover {
     text-decoration: none;
 }
+
+basket {
+    margin-bottom: 3px;
+    margin-top: -10px;
+    
+}

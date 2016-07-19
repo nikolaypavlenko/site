@@ -84,7 +84,15 @@ class SiteController extends Controller
     {
         $tag = Tag::find()->all();
         $news = News::find()->all();
-     
+        
+        if(isset($_GET['page'])) { //при отправки товара в корзину, чтобы оставались на той же странице-пагинации
+            $pag = $_GET['page'];
+        } else {
+            $pag = '1';
+        }
+        
+        
+     //var_dump($per); die();
          // постраничный вывод товара
         $query = Product::find()
                 ->select('product.*')
@@ -94,13 +102,15 @@ class SiteController extends Controller
                 //->all();
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
-
+        
      
         return $this->render('index', [
                 'tag' => $tag,
                 'posts' => $posts,
                 'pages' => $pages,
                 'news' => $news,
+                'pag' => $pag,
+               
             ]);
     }
 
@@ -171,6 +181,13 @@ class SiteController extends Controller
 
         $tag = Tag::find()->all(); // для левого сайдбара
         
+        if(isset($_GET['page'])) { //при отправки товара в корзину, чтобы оставались на той же странице-пагинации
+            $pag = $_GET['page'];
+        } else {
+            $pag = '1';
+        }
+        $id_tag = $id; 
+        
         $query = Tag::find($id)
                 ->select (['*'])
                 //->from(`product`, `image`)
@@ -188,6 +205,8 @@ class SiteController extends Controller
                 'pages' => $pages,
                 'tag' => $tag,
                 'tags' => $tags,
+                'pag' => $pag,
+                'id_tag' => $id_tag,
                 ]);
     }
 
@@ -198,10 +217,9 @@ class SiteController extends Controller
             return $this->render('detailnews', [
                 'news' => $news,
             ]);
-
     }
-
-     public function actionAdd($id) {
+// передача данных в корзину со страницы о тех характеристиках продукта
+     public function actionAdd($id) { 
 
             $session = Yii::$app->session;
             $session->open();
@@ -209,15 +227,60 @@ class SiteController extends Controller
             $basket = $session['basket'];
             $basket[] = $id;
             $session['basket'] = $basket;
-
-
-            var_dump($session['basket']);
-          
-          die();
-
-
+            
+                       
+            return $this->redirect(['detail', 'id'=> $id]);
     }
     
+    //передача данных в корзину с главной страницы, $page - страница в пагинации
+    public function actionAdd_index($id, $page) {  
+            $session = Yii::$app->session;
+            $session->open();
+
+            $basket = $session['basket'];
+            $basket[] = $id;
+            $session['basket'] = $basket;
+            
+            return $this->redirect( "http://shop/frontend/web/index.php?r=site%2Findex&page=$page&per-page=9");
+    }
+    
+    public function actionAdd_detailtag($id, $id_tag, $page) {  
+            $session = Yii::$app->session;
+            $session->open();
+
+            $basket = $session['basket'];
+            $basket[] = $id;
+            $session['basket'] = $basket;
+            
+            return $this->redirect( "http://shop/frontend/web/index.php?r=site%2Fdetailtag&id=$id_tag&page=$page&per-page=9");
+    }
+    
+    public function actionBasket($keys = "") {
+            
+            $session = Yii::$app->session;
+             
+            $basket = $session['basket']; //отдаем переменной значения сессии перед ее удалением;
+            
+            session_destroy() ;  // удаляем все значения сессии
+            
+            if(!empty($basket)) {        //создаем новый массив без удаленного продукта c корзины со значением $keys
+                foreach ($basket as $value) {
+                          if ( $value == $keys ) { 
+                              $value =0;
+                             }
+                         $new_basket[]=$value;
+                 }
+            }        
+                 
+            $session['basket'] = $new_basket;      // сессии присваиваем новое значений
+                    
+            $products = Product::findAll($session['basket']);
+            
+        return $this->render('basket', [
+                'products' => $products,
+            ]);
+    }
+
     public function actionNews()
     {
         $news = News::find()->all();

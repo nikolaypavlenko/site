@@ -21,8 +21,8 @@ use yii\widgets\ActiveForm;
 
 				<h3> цена:  <?=$product->price ?> грн. 
 
-					           <button type="button" class="btn btn-warning"><acronym title="в корзину">
-                               <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button> </h3><br>
+					           <a href="index.php?r=site/add&id=<?=$product->id?>" <button type="button" class="btn btn-warning"><acronym title="в корзину"> 
+                                                               <span class="glyphicon glyphicon-shopping-cart"></span></acronym></a></button> </h3><br>
 
 						<?php foreach ($product->tag as $item) :?>
 		                         <a href="index.php?r=site/detailtag&id=<?=$item->id?>"><?=$item->name?>&nbsp&nbsp</a>   

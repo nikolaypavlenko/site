@@ -47,8 +47,8 @@ $this->title = 'Смартфоны и телефоны';
                                                 <b>Модель: <span style="color:blue"><?=$item->logo ?></span></b><br>
                                                 
                                                 Цена: <?=$item->price ?> грн. <br><br>
-                                                <button type="button" class="btn btn-warning"><acronym title="в корзину">
-                                                        <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button>
+                                                <a href="index.php?r=site/add_index&id=<?=$item->id?>&per=<?=$per?>&page=<?=$pag?>"><button type="button" class="btn btn-warning"><acronym title="в корзину">
+                                                            <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a>
                                                 <a href="index.php?r=site/detail&id=<?=$item->id ?>">
                                                         <button type="button" class="btn btn-info">тех. характеристики</button></a>
                                                 <hr>
