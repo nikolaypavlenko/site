@@ -42,7 +42,7 @@ $this->title = 'Смартфоны и телефоны';
                                             <?php if (!empty($item)) : ?>
                                                 <b><h3><center><?=$item->title_ru ?></center></h3></b>
                                                 
-                                                <img style="height:200px" src="<?=$item->img['0']['image'] ?>"><br><br>
+                                                <center><img style="height:200px" src="<?=$item->img['0']['image'] ?>"></center><br><br>
                                                 
                                                 <b>Модель: <span style="color:blue"><?=$item->logo ?></span></b><br>
                                                 

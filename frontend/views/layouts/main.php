@@ -8,6 +8,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
+use frontend\models\Basket;
+
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -46,7 +48,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Кабинет', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Корзина', 'url' => ['/site/basket']];
+        $menuItems[] = ['label' => 'Корзина (' . Basket::count_items() . ')', 'url' => ['/site/basket']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

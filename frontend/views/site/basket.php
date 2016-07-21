@@ -1,6 +1,6 @@
     <div class="body-content">
         
-        <?php foreach($products  as $key => $product) :?>
+        <?php foreach($purchase  as $key => $product) :?>
                 <?php  $i++ ;?>
                     <?php if($i == 1 or $i == 5 or $i == 9) {
                                 echo "<div class='row'>" ;
@@ -12,7 +12,7 @@
                                 <h1 style="color:grey"><?=$product->title_ru ?></h1>
                                 модель:  <span style="color:green"><?=$product->logo ?></span>
                                 <h4> цена:  <?=$product->price ?> грн.
-                                <a href="index.php?r=site%2Fbasket&keys=<?=$product->id ?>">
+                                <a href="index.php?r=site%2Fbasket&product_id=<?=$product->id ?>">
                                     <button type="button" class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-remove"></span></button></a></h4>
 
@@ -25,4 +25,5 @@
                     
         <?php endforeach ;?>
         
+               
     </div>

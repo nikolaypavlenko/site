@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\data\Pagination;
 use yii\data\ArrayDataProvider;
 use yii\data\DataProviderInterface;
+use frontend\models\Basket;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -20,6 +21,7 @@ use common\models\News;
 use common\models\RelationTag;
 use common\models\LoginForm;
 use common\models\Comment;
+
 
 
 
@@ -164,7 +166,8 @@ class SiteController extends Controller
         $childcomments = Comment::find()
                 ->where (['product_id' => $id])
                 ->all();
-
+        
+$comment->comment = '';
 
         return $this->render('detail', [
                 'product' => $product,
@@ -212,14 +215,15 @@ class SiteController extends Controller
 
     public function actionDetailnews($id)
     {
-        $news = News::find()->where(['id' => $id])->one();
+            $news = News::find()->where(['id' => $id])->one();
 
             return $this->render('detailnews', [
                 'news' => $news,
             ]);
     }
-// передача данных в корзину со страницы о тех характеристиках продукта
-     public function actionAdd($id) { 
+    // поступление данных в корзину от detailtag
+    public function actionAdd($id) 
+    { 
 
             $session = Yii::$app->session;
             $session->open();
@@ -232,8 +236,9 @@ class SiteController extends Controller
             return $this->redirect(['detail', 'id'=> $id]);
     }
     
-    //передача данных в корзину с главной страницы, $page - страница в пагинации
-    public function actionAdd_index($id, $page) {  
+    // поступление данных в корзину от view/index, $page - страница в пагинации
+    public function actionAdd_index($id, $page) 
+    {  
             $session = Yii::$app->session;
             $session->open();
 
@@ -244,7 +249,8 @@ class SiteController extends Controller
             return $this->redirect( "http://shop/frontend/web/index.php?r=site%2Findex&page=$page&per-page=9");
     }
     
-    public function actionAdd_detailtag($id, $id_tag, $page) {  
+    public function actionAdd_detailtag($id, $id_tag, $page) 
+    {  
             $session = Yii::$app->session;
             $session->open();
 
@@ -255,39 +261,37 @@ class SiteController extends Controller
             return $this->redirect( "http://shop/frontend/web/index.php?r=site%2Fdetailtag&id=$id_tag&page=$page&per-page=9");
     }
     
-    public function actionBasket($keys = "") {
+    public function actionBasket($product_id = "") 
+    {
             
             $session = Yii::$app->session;
              
-            $basket = $session['basket']; //отдаем переменной значения сессии перед ее удалением;
+           // var_dump(Basket::Count_items()); 
+           // var_dump($session['basket']);
+            /// die();
+            $basket = $session['basket'];       // на прямую к сессии не обращаемся, только через переменную
             
-            session_destroy() ;  // удаляем все значения сессии
-            
-            if(!empty($basket)) {        //создаем новый массив без удаленного продукта c корзины со значением $keys
-                foreach ($basket as $value) {
-                          if ( $value == $keys ) { 
-                              $value =0;
-                             }
-                         $new_basket[]=$value;
-                 }
-            }        
-                 
-            $session['basket'] = $new_basket;      // сессии присваиваем новое значений
+                foreach ($basket as $key => $value) {
+                    if ( $value == $product_id ) { 
+                              unset($basket[$key]);
+                    }
+                } 
+            $session['basket'] = $basket;       // сессии присваиваем отсортированную переменную
                     
-            $products = Product::findAll($session['basket']);
+            $purchase = Product::findAll($session['basket']);
             
-        return $this->render('basket', [
-                'products' => $products,
-            ]);
+            return $this->render('basket', [
+                    'purchase' => $purchase,
+                ]);
     }
 
     public function actionNews()
     {
         $news = News::find()->all();
 
-            return $this->render('news', [
-                'news' => $news,
-            ]);
+        return $this->render('news', [
+            'news' => $news,
+        ]);
     }
 
 

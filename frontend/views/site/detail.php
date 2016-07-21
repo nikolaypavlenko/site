@@ -61,7 +61,7 @@ use yii\widgets\ActiveForm;
 								<div class="col-md-2 col-lg-2">	</div>	
 								<div class="col-md-10 col-lg-10">
 									<?php $form = ActiveForm::begin(); ?>
-									    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true ]) ?>
+									    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true , 'value' => '']) ?>
 									    <?= $form->field($comment, 'parent_id')->hiddenInput(['value' => $comment->id])->label(false) ?>
 									    <div class="form-group">
 									        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', 
@@ -78,7 +78,7 @@ use yii\widgets\ActiveForm;
 	
 	        <?php $form = ActiveForm::begin(); ?>
 
-		    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true]) ?>
+		    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true , 'value' => '']) ?>
 
 		    <div class="form-group">
 		        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
