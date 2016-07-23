@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\data\Pagination;
 use yii\data\ArrayDataProvider;
 use yii\data\DataProviderInterface;
+use yii\helpers\Url;
 use frontend\models\Basket;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
@@ -88,9 +89,9 @@ class SiteController extends Controller
         $news = News::find()->all();
         
         if(isset($_GET['page'])) { //при отправки товара в корзину, чтобы оставались на той же странице-пагинации
-            $pag = $_GET['page'];
+            $pagination = $_GET['page'];
         } else {
-            $pag = '1';
+            $pagination = '1';
         }
         
         
@@ -111,7 +112,7 @@ class SiteController extends Controller
                 'posts' => $posts,
                 'pages' => $pages,
                 'news' => $news,
-                'pag' => $pag,
+                'pagination' => $pagination,
                
             ]);
     }
@@ -157,7 +158,7 @@ class SiteController extends Controller
      
         //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
         
-        $paren = $_GET['parent']; // если есть ГЕТ парент, то в представлении открывается окно для ввода комментов на коммент
+        $paren = $_GET['parent']; // если есть $_GET['parent'], то в представлении открывается окно для ввода комментов на коммент
         
         $comments = Comment::find()
                 ->where (['product_id' => $id, 'parent_id' => 0])
@@ -167,8 +168,6 @@ class SiteController extends Controller
                 ->where (['product_id' => $id])
                 ->all();
         
-$comment->comment = '';
-
         return $this->render('detail', [
                 'product' => $product,
                 'comments' => $comments,
@@ -244,12 +243,12 @@ $comment->comment = '';
 
             $basket = $session['basket'];
             $basket[] = $id;
-            $session['basket'] = $basket;
+            $session['basket'] = $basket;   
             
-            return $this->redirect( "http://shop/frontend/web/index.php?r=site%2Findex&page=$page&per-page=9");
+            return $this->redirect( Yii::$app->urlManager->createUrl(['site/index', 'page' => $page]) );
     }
     
-    public function actionAdd_detailtag($id, $id_tag, $page) 
+    public function actionAdd_detailtag($id, $id_tag, $page = '1') 
     {  
             $session = Yii::$app->session;
             $session->open();
@@ -258,7 +257,7 @@ $comment->comment = '';
             $basket[] = $id;
             $session['basket'] = $basket;
             
-            return $this->redirect( "http://shop/frontend/web/index.php?r=site%2Fdetailtag&id=$id_tag&page=$page&per-page=9");
+            return $this->redirect( Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $id_tag, 'page' => $page, 'per-page' => '9']));
     }
     
     public function actionBasket($product_id = "") 
@@ -266,17 +265,16 @@ $comment->comment = '';
             
             $session = Yii::$app->session;
              
-           // var_dump(Basket::Count_items()); 
-           // var_dump($session['basket']);
-            /// die();
             $basket = $session['basket'];       // на прямую к сессии не обращаемся, только через переменную
             
-                foreach ($basket as $key => $value) {
-                    if ( $value == $product_id ) { 
-                              unset($basket[$key]);
-                    }
-                } 
-            $session['basket'] = $basket;       // сессии присваиваем отсортированную переменную
+                if(!empty($basket)) {           // проверка на наличие данных, если массив пустой - ошибка вывода функции foreach
+                    foreach ($basket as $key => $value) {
+                        if ( $value == $product_id ) { 
+                                  unset($basket[$key]);
+                        }
+                    } 
+                }
+            $session['basket'] = $basket;       // сессии присваиваем переменную без удаленного товара
                     
             $purchase = Product::findAll($session['basket']);
             

@@ -1,6 +1,10 @@
 <?php 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\web\UrlManager;
+use yii\BaseYii;
+use yii\web\Application;
+
 ?>
 
     <div class="body-content">
@@ -21,11 +25,12 @@ use yii\widgets\ActiveForm;
 
 				<h3> цена:  <?=$product->price ?> грн. 
 
-					           <a href="index.php?r=site/add&id=<?=$product->id?>" <button type="button" class="btn btn-warning"><acronym title="в корзину"> 
-                                                               <span class="glyphicon glyphicon-shopping-cart"></span></acronym></a></button> </h3><br>
+					           <a href="<?php echo Yii::$app->urlManager->createUrl(['site/add', 'id' => $product->id]) ;?>">
+                                                       <button type="button" class="btn btn-warning"><acronym title="в корзину"> 
+                                                               <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a> </h3><br>
 
 						<?php foreach ($product->tag as $item) :?>
-		                         <a href="index.php?r=site/detailtag&id=<?=$item->id?>"><?=$item->name?>&nbsp&nbsp</a>   
+		                         <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $item->id]) ;?>" ><?=$item->name?>&nbsp&nbsp</a>   
 		                <?php endforeach ;?>
 	
 			<?php if(!empty($comments)) :?> 
@@ -37,7 +42,7 @@ use yii\widgets\ActiveForm;
 					</div>
 					<div class='row'>
 						<div class="col-md-11 col-lg-11"> <em><?=$comment->comment ?></em> </div>
-						<div class="col-md-1 col-lg-1"> <a href="index.php?r=site/detail&id=<?=$comment->product_id?>&parent=<?=$comment->id?>"> 
+						<div class="col-md-1 col-lg-1"> <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detail', 'id' => $comment->product_id, 'parent' => $comment->id]) ; ?>"> 
 									<button type="button" class="btn btn-default btn-xs">ответить</button> 	</a> </div>
 					</div>
 

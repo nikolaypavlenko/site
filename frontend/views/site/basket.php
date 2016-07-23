@@ -12,7 +12,7 @@
                                 <h1 style="color:grey"><?=$product->title_ru ?></h1>
                                 модель:  <span style="color:green"><?=$product->logo ?></span>
                                 <h4> цена:  <?=$product->price ?> грн.
-                                <a href="index.php?r=site%2Fbasket&product_id=<?=$product->id ?>">
+                                <a href="<?php echo Yii::$app->urlManager->createUrl(['site/basket', 'product_id' => $product->id]) ; ?>">
                                     <button type="button" class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-remove"></span></button></a></h4>
 

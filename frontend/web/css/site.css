@@ -110,8 +110,8 @@ a.desc:after {
     text-decoration: none;
 }
 
-basket {
-    margin-bottom: 3px;
-    margin-top: -10px;
-    
+.okno {
+    height: 60px;
+    width: 60px;   
+    background: red;
 }

@@ -1,4 +1,8 @@
 <?php
+use yii\web\UrlManager;
+use yii\BaseYii;
+use yii\web\Application;
+
 
 /* @var $this yii\web\View */
 
@@ -15,7 +19,7 @@ $this->title = 'Смартфоны и телефоны';
             <div class="row">
                 <div><h4> Выбор по параметрам </h4></div><br>
                     <?php foreach ($tag as $item) :?>
-                         <a href="index.php?r=site/detailtag&id=<?=$item->id ?>"><?=$item->name ?></a><br>
+                         <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $item->id]) ; ?>"><?=$item->name ?></a><br>
                     <?php endforeach ;?>
             </div><br><br><br><br>
 
@@ -47,10 +51,12 @@ $this->title = 'Смартфоны и телефоны';
                                                 <b>Модель: <span style="color:blue"><?=$item->logo ?></span></b><br>
                                                 
                                                 Цена: <?=$item->price ?> грн. <br><br>
-                                                <a href="index.php?r=site/add_index&id=<?=$item->id?>&per=<?=$per?>&page=<?=$pag?>"><button type="button" class="btn btn-warning"><acronym title="в корзину">
+                                                <a href="<?php echo Yii::$app->urlManager->createUrl(['site/add_index', 'id' => $item->id , 'page' => $pagination]) ;?>" >
+                                                            <button type="button" class="btn btn-warning"><acronym title="в корзину">
                                                             <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a>
-                                                <a href="index.php?r=site/detail&id=<?=$item->id ?>">
+                                                <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detail', 'id' => $item->id ]) ;?>" >
                                                         <button type="button" class="btn btn-info">тех. характеристики</button></a>
+                                                <div class="okno" id="okno" > </div>
                                                 <hr>
                                             <?php endif; ?>
                                         </div>
