@@ -248,7 +248,18 @@ class SiteController extends Controller
             return $this->redirect( Yii::$app->urlManager->createUrl(['site/index', 'page' => $page]) );
     }
     
-    public function actionAdd_detailtag($id, $id_tag, $page = '1') 
+    public function actionAdd_detailtag($id, $id_tag, $page) 
+    {  
+            $session = Yii::$app->session;
+            $session->open();
+
+            $basket = $session['basket'];
+            $basket[] = $id;
+            $session['basket'] = $basket;  
+  
+            return $this->redirect( Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $id_tag, 'page' => $page, 'per-page' => '9']));      }
+   
+    public function actionAdd_basket($id) 
     {  
             $session = Yii::$app->session;
             $session->open();
@@ -257,12 +268,11 @@ class SiteController extends Controller
             $basket[] = $id;
             $session['basket'] = $basket;
             
-            return $this->redirect( Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $id_tag, 'page' => $page, 'per-page' => '9']));
+            return $this->redirect( Yii::$app->urlManager->createUrl(['site/basket']));
     }
     
     public function actionBasket($product_id = "") 
     {
-            
             $session = Yii::$app->session;
              
             $basket = $session['basket'];       // на прямую к сессии не обращаемся, только через переменную
@@ -271,15 +281,20 @@ class SiteController extends Controller
                     foreach ($basket as $key => $value) {
                         if ( $value == $product_id ) { 
                                   unset($basket[$key]);
+                                  break(1);                 // как только удалеям одну еденицу товара - прерываем цикл
                         }
                     } 
                 }
             $session['basket'] = $basket;       // сессии присваиваем переменную без удаленного товара
-                    
+            
+            $count =  Basket::Count_values();
+            
             $purchase = Product::findAll($session['basket']);
             
             return $this->render('basket', [
                     'purchase' => $purchase,
+                    'count' => $count,
+                    
                 ]);
     }
 

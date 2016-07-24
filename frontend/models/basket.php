@@ -14,7 +14,13 @@ use Yii;
             return(count($session['basket']));
         }
                 
-                
+        public static function Count_values()
+        {
+            $session = Yii::$app->session;
+            
+            return(array_count_values($session['basket']));  
+        
+        }
         
         
     }
