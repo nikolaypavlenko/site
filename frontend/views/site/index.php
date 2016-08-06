@@ -26,7 +26,7 @@ $this->title = 'Смартфоны и телефоны';
              <div class="row">
                 <div><h4> Новости </h4></div><br>
                     <?php foreach ($news as $new) :?>
-                        <a href="index.php?r=site/detailnews&id=<?=$new->id ?>"><?=$new->title_ru ?></a><br>
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detailnews', 'id' => $new->id]) ; ?>"> <?=$new->title_ru ?></a><br>
                     <?php endforeach ;?>
             </div>
         </div>
@@ -56,7 +56,7 @@ $this->title = 'Смартфоны и телефоны';
                                                             <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a>
                                                 <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detail', 'id' => $item->id ]) ;?>" >
                                                         <button type="button" class="btn btn-info">тех. характеристики</button></a>
-                                                <div class="okno" id="okno" > </div>
+                                                <!--<div class="okno" id="okno" > </div> -->
                                                 <hr>
                                             <?php endif; ?>
                                         </div>

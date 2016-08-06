@@ -43,7 +43,7 @@ $this->title = 'Смартфоны и телефоны';
                                                         
                                                         Цена: <?=$item['price'] ?> грн. <br><br>
                                                         <a href="<?php echo Yii::$app->urlManager->createUrl(['site/add_detailtag', 
-                                                            'id' => $item['product_id'] , 'id_tag' => $id_tag, 'per' => $per, 'page' => $pag]) ;?>" >
+                                                            'id' => $item['product_id'] , 'id_tag' => $id_tag, 'per' => 9, 'page' => $pag]) ;?>" >
                                                           <button type="button" class="btn btn-warning"><acronym title="в корзину">
                                                                   <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a>
                                                         <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detail', 'id' => $item['product_id']]) ; ?>">

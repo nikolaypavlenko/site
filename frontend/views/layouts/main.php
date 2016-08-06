@@ -40,15 +40,16 @@ AppAsset::register($this);
         ['label' => 'Главная', 'url' => ['/site/index']],
         ['label' => 'Новости', 'url' => ['/site/news']],
         ['label' => 'Вопросы-ответы', 'url' => ['/site/question']],
-        ['label' => 'Доставка', 'url' => ['/site/delivery']],
-        ['label' => 'Контакты', 'url' => ['/site/contact']],
+       // ['label' => 'Доставка', 'url' => ['/site/delivery']],
+       // ['label' => 'Контакты', 'url' => ['/site/contact']],
+        ['label' => 'Корзина (' . Basket::count_items() . ')', 'url' => ['/site/basket']]
 
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Кабинет', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Корзина (' . Basket::count_items() . ')', 'url' => ['/site/basket']];
+       // $menuItems[] = ['label' => 'Корзина (' . Basket::count_items() . ')', 'url' => ['/site/basket']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

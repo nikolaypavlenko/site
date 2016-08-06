@@ -28,26 +28,29 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandLabel' => 'Phone',
+        'brandUrl' => '/',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Comment', 'url' => ['/comment/index']],
-        ['label' => 'Img', 'url' => ['/img/index']],
-        ['label' => 'News', 'url' => ['/news/index']],
-        ['label' => 'Product', 'url' => ['/product/index']],
-        ['label' => 'Tag', 'url' => ['/tag/index']],
-        ['label' => 'User', 'url' => ['/user/index']],
+//    $menuItems = [
+//        ['label' => 'Home', 'url' => ['/site/index']],
+//        
 
 
-    ];
+  //  ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+        $menuItems = [
+            ['label' => 'Comment', 'url' => ['/comment/index']],
+            ['label' => 'Img', 'url' => ['/img/index']],
+            ['label' => 'News', 'url' => ['/news/index']],
+            ['label' => 'Product', 'url' => ['/product/index']],
+            ['label' => 'Tag', 'url' => ['/tag/index']],
+            ['label' => 'User', 'url' => ['/user/index']],
+        ];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

@@ -1,0 +1,19 @@
+#Options +FollowSymLinks
+#Options +Includes
+#Options Indexes
+IndexIgnore */*
+
+RewriteEngine on
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+#RewriteRule . index.php
+
+# follow symbolic links
+Options FollowSymlinks
+RewriteEngine on
+RewriteRule ^admin(.{2,})?$ /backend/web/$1 [L,PT]
+RewriteRule ^([^/].*)?$ /frontend/web/$1

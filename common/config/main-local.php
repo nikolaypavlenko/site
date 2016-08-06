@@ -25,11 +25,11 @@ return [
                     'port' => '587',
                     'encryption' => 'tls',
                 ],
+        ],
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            
-        ],
         
         ],
     ],

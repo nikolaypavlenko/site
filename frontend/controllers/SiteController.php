@@ -93,9 +93,7 @@ class SiteController extends Controller
         } else {
             $pagination = '1';
         }
-        
-        
-     //var_dump($per); die();
+       
          // постраничный вывод товара
         $query = Product::find()
                 ->select('product.*')
@@ -140,6 +138,7 @@ class SiteController extends Controller
 
     public function actionDetail($id)
     {
+        $message = '';
         
         $product = Product::find()->where(['id' => $id])->one();
         
@@ -148,9 +147,9 @@ class SiteController extends Controller
 
                 if(!Yii::$app->user->isGuest) {
                     $comment->user_id = Yii::$app->user->id;
-                    $comment->product_id = $_GET['id'];
+                    $comment->product_id = filter_input(INPUT_GET, 'id');
                     } else {
-                        $message = "Для отправки сообщения необходимo ввойти в кабинет";
+                        $message = "<br> Для отправки сообщения необходимo ввойти в кабинет";
                     }
                 $comment->save();
                 unset($_GET['parent']);    // удаление гета, чтобы окно ответа на комментарий не появлялось
@@ -158,7 +157,7 @@ class SiteController extends Controller
      
         //var_dump($comment->save(), $comment->validate(), $comment->errors); die();
         
-        $paren = $_GET['parent']; // если есть $_GET['parent'], то в представлении открывается окно для ввода комментов на коммент
+        $paren = \filter_input(\INPUT_GET, 'parent'); // если есть $_GET['parent'], то в представлении открывается окно для ввода комментов на коммент
         
         $comments = Comment::find()
                 ->where (['product_id' => $id, 'parent_id' => 0])
@@ -206,7 +205,6 @@ class SiteController extends Controller
                 'posts' => $posts,
                 'pages' => $pages,
                 'tag' => $tag,
-                'tags' => $tags,
                 'pag' => $pag,
                 'id_tag' => $id_tag,
                 ]);

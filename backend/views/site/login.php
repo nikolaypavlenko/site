@@ -1,3 +1,12 @@
+<html>
+<script>
+alert ('login : test \n\
+ password:  123456');
+</script>
+</html>
+
+
+
 <?php
 
 /* @var $this yii\web\View */
@@ -10,6 +19,8 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 

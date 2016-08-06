@@ -29,9 +29,11 @@ use yii\web\Application;
                                                        <button type="button" class="btn btn-warning"><acronym title="в корзину"> 
                                                                <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a> </h3><br>
 
-						<?php foreach ($product->tag as $item) :?>
+				<?php foreach ($product->tag as $item) :?>
 		                         <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $item->id]) ;?>" ><?=$item->name?>&nbsp&nbsp</a>   
 		                <?php endforeach ;?>
+                                
+                                <span style="color:red"> <?=$message ?> </span>
 	
 			<?php if(!empty($comments)) :?> 
   				<?php foreach ($comments as $comment) :?>
@@ -69,8 +71,7 @@ use yii\web\Application;
 									    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true , 'value' => '']) ?>
 									    <?= $form->field($comment, 'parent_id')->hiddenInput(['value' => $comment->id])->label(false) ?>
 									    <div class="form-group">
-									        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', 
-									        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+									        <?= Html::submitButton('Опубликовать', ['class' =>  'btn btn-primary']) ?>
 									    </div>
 									<?php ActiveForm::end(); ?>
 								</div>
@@ -86,10 +87,10 @@ use yii\web\Application;
 		    <?= $form->field($comment, 'comment')->textArea(['maxlength' => true , 'value' => '']) ?>
 
 		    <div class="form-group">
-		        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Опубликовать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		        <?= Html::submitButton('Опубликовать', ['class' =>  'btn btn-primary']) ?>
 		    </div>
-			<span style="color:red"> <?=$message ?> </span>
-		    <?php ActiveForm::end(); ?>
+			
+		<?php ActiveForm::end(); ?>
 
 		</div>
 	</div>

@@ -21,6 +21,8 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '/' => 'site/index',
+                'basket' => 'site/basket',
+                'news' => 'site/news',
             ],
         ],
         
@@ -36,14 +38,9 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
+        'request' => [
+            'baseUrl' => '',
         ],
-        */
     ],
     'params' => $params,
 

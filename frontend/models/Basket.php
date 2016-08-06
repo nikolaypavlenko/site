@@ -18,8 +18,10 @@ use Yii;
         {
             $session = Yii::$app->session;
             
-            return(array_count_values($session['basket']));  
-        
+            if($session['basket']) {
+            
+            return array_count_values($session['basket']); 
+            }
         }
         
         
