@@ -53,4 +53,14 @@ class Tag extends \yii\db\ActiveRecord
        return $this->hasMany(Product::className(), ['id' => 'product_id'])
         ->via('relationTag');
     }
+    
+    public static function listTag()
+    {
+        $rows = (new \yii\db\Query())
+            ->select(['id', 'name'])
+            ->from('tag')
+            ->all();
+        
+        return $rows;
+    }
 }

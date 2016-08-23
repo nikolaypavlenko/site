@@ -99,7 +99,8 @@ class SiteController extends Controller
                 ->select('product.*')
                 ->leftJoin('img', '`img`.`product_id` = `product`.`id`')
                 ->where(['product.status' => 1])
-                ->with('img'); // присоединяемая таблица
+                ->with('img') // присоединяемая таблица
+                ->orderBy(['price' => SORT_ASC ]);
                 //->all();
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
@@ -201,7 +202,7 @@ class SiteController extends Controller
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
         $posts = $query->offset($pages->offset)->limit($pages->limit)->all();
 
-            return $this->render('detailtag', [
+        return $this->render('detailtag', [
                 'posts' => $posts,
                 'pages' => $pages,
                 'tag' => $tag,
@@ -212,9 +213,9 @@ class SiteController extends Controller
 
     public function actionDetailnews($id)
     {
-            $news = News::find()->where(['id' => $id])->one();
+        $news = News::find()->where(['id' => $id])->one();
 
-            return $this->render('detailnews', [
+        return $this->render('detailnews', [
                 'news' => $news,
             ]);
     }
@@ -222,78 +223,78 @@ class SiteController extends Controller
     public function actionAdd($id) 
     { 
 
-            $session = Yii::$app->session;
-            $session->open();
+        $session = Yii::$app->session;
+        $session->open();
 
-            $basket = $session['basket'];
-            $basket[] = $id;
-            $session['basket'] = $basket;
-            
-                       
-            return $this->redirect(['detail', 'id'=> $id]);
+        $basket = $session['basket'];
+        $basket[] = $id;
+        $session['basket'] = $basket;
+
+
+        return $this->redirect(['detail', 'id'=> $id]);
     }
     
     // поступление данных в корзину от view/index, $page - страница в пагинации
     public function actionAdd_index($id, $page) 
     {  
-            $session = Yii::$app->session;
-            $session->open();
+        $session = Yii::$app->session;
+        $session->open();
 
-            $basket = $session['basket'];
-            $basket[] = $id;
-            $session['basket'] = $basket;   
-            
-            return $this->redirect( Yii::$app->urlManager->createUrl(['site/index', 'page' => $page]) );
+        $basket = $session['basket'];
+        $basket[] = $id;
+        $session['basket'] = $basket;   
+
+        return $this->redirect( Yii::$app->urlManager->createUrl(['site/index', 'page' => $page]) );
     }
     
     public function actionAdd_detailtag($id, $id_tag, $page) 
     {  
-            $session = Yii::$app->session;
-            $session->open();
+        $session = Yii::$app->session;
+        $session->open();
 
-            $basket = $session['basket'];
-            $basket[] = $id;
-            $session['basket'] = $basket;  
-  
-            return $this->redirect( Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $id_tag, 'page' => $page, 'per-page' => '9']));      }
+        $basket = $session['basket'];
+        $basket[] = $id;
+        $session['basket'] = $basket;  
+
+        return $this->redirect( Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $id_tag, 'page' => $page, 'per-page' => '9']));      }
    
     public function actionAdd_basket($id) 
     {  
-            $session = Yii::$app->session;
-            $session->open();
+        $session = Yii::$app->session;
+        $session->open();
 
-            $basket = $session['basket'];
-            $basket[] = $id;
-            $session['basket'] = $basket;
-            
-            return $this->redirect( Yii::$app->urlManager->createUrl(['site/basket']));
+        $basket = $session['basket'];
+        $basket[] = $id;
+        $session['basket'] = $basket;
+
+        return $this->redirect( Yii::$app->urlManager->createUrl(['site/basket']));
     }
     
     public function actionBasket($product_id = "") 
     {
-            $session = Yii::$app->session;
-             
-            $basket = $session['basket'];       // на прямую к сессии не обращаемся, только через переменную
-            
-                if(!empty($basket)) {           // проверка на наличие данных, если массив пустой - ошибка вывода функции foreach
-                    foreach ($basket as $key => $value) {
-                        if ( $value == $product_id ) { 
-                                  unset($basket[$key]);
-                                  break(1);                 // как только удалеям одну еденицу товара - прерываем цикл
-                        }
-                    } 
-                }
-            $session['basket'] = $basket;       // сессии присваиваем переменную без удаленного товара
-            
-            $count =  Basket::Count_values();
-            
-            $purchase = Product::findAll($session['basket']);
-            
-            return $this->render('basket', [
-                    'purchase' => $purchase,
-                    'count' => $count,
-                    
-                ]);
+        $session = Yii::$app->session;
+
+        $basket = $session['basket'];       // на прямую к сессии не обращаемся, только через переменную
+
+            if(!empty($basket)) {           // проверка на наличие данных, если массив пустой - ошибка вывода функции foreach
+                foreach ($basket as $key => $value) {
+                    if ( $value == $product_id ) { 
+                              unset($basket[$key]);
+                              break(1);                 // как только удалеям одну еденицу товара - прерываем цикл
+                    }
+                } 
+            }
+        $session['basket'] = $basket;       // сессии присваиваем переменную без удаленного товара
+
+        $count =  Basket::Count_values();
+
+        $purchase = Product::findAll($session['basket']);
+
+        return $this->render('basket', [
+                'purchase' => $purchase,
+                'count' => $count,
+
+            ]);
     }
 
     public function actionNews()

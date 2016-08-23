@@ -21,9 +21,11 @@ $this->title = 'Смартфоны и телефоны';
                     <?php foreach ($tag as $item) :?>
                          <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detailtag', 'id' => $item->id]) ; ?>"><?=$item->name ?></a><br>
                     <?php endforeach ;?>
-            </div><br><br><br><br>
+            </div><br><br>
 
-             <div class="row">
+            <?=$this->render( '../../widgets/views/searching.php' ) ?>
+                
+            <div class="row"><br><br>
                 <div><h4> Новости </h4></div><br>
                     <?php foreach ($news as $new) :?>
                 <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detailnews', 'id' => $new->id]) ; ?>"> <?=$new->title_ru ?></a><br>
@@ -66,8 +68,13 @@ $this->title = 'Смартфоны и телефоны';
                                             } ?> 
                         <?php endforeach ;?>
             <?php endif; ?>
+        <br>     
+
         </div>
-        <?= \yii\widgets\LinkPager::widget(['pagination' => $pages]) ?>
+        </div>
+        <div class="col-md-2 col-lg-2"></div>
+        <div class="col-md-10 col-lg-10">
+                <?= \yii\widgets\LinkPager::widget(['pagination' => $pages]) ?>
         </div>
     </div>
 </div>
