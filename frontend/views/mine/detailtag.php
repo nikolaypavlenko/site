@@ -1,7 +1,6 @@
 <?php
 /* @var $this yii\web\View */
 use yii\widgets\LinkPager;
-
 $this->title = 'Смартфоны и телефоны';
 ?>
 <div class="site-index">
@@ -27,7 +26,8 @@ $this->title = 'Смартфоны и телефоны';
 
                     <?php if (!empty($posts)) : ?>
                                 <?php $i = 0 ;?>
-                        
+                       <?php echo "сортировка по " . $sort->link('price')  ?>
+
                                 <?php foreach($posts as  $item) :?>
                                         <?php  $i++ ;?>
                                             <?php if($i == 1 or $i == 4 or $i == 7) {
@@ -43,8 +43,9 @@ $this->title = 'Смартфоны и телефоны';
                                                         <b>Модель: <span style="color:blue"><?=$item['logo'] ?></span></b><br>
                                                         
                                                         Цена: <?=$item['price'] ?> грн. <br><br>
-                                                        <a href="<?php echo Yii::$app->urlManager->createUrl(['site/add_detailtag', 
-                                                            'id' => $item['product_id'] , 'id_tag' => $id_tag, 'per' => 9, 'page' => $pag]) ;?>" >
+                                                        <a href="<?php echo Yii::$app->urlManager->createUrl(['mine/add_detailtag_basket',
+                                                            'tag' => $tag, 'price' => $price, 'propert' => $propert, 
+                                                            'id' => $item['product_id'] , 'per' => 9, 'page' => $pag]) ;?>" >
                                                           <button type="button" class="btn btn-warning"><acronym title="в корзину">
                                                                   <span class="glyphicon glyphicon-shopping-cart"></span></acronym></button></a>
                                                         <a href="<?php echo Yii::$app->urlManager->createUrl(['site/detail', 'id' => $item['product_id']]) ; ?>">

@@ -23,6 +23,7 @@ return [
                 '/' => 'site/index',
                 'basket' => 'site/basket',
                 'news' => 'site/news',
+                'detailtag' => 'mine/detailtag',
             ],
         ],
         

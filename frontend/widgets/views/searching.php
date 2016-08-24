@@ -10,7 +10,7 @@ use common\models\Tag;
     <div class="row">
     <?=Html::beginForm(\yii\helpers\Url::to('mine/detailtag'), 'get') ?>
         <div>
-            <?=Html::textInput('propert', '', ['class' =>['form-control', 'searching']]) ?>
+            <?=Html::textInput('propert', '', ['class' =>['form-control', 'searching'], 'placeholder' => '    свойство']) ?>
         </div>
         <div>
             <?=Html::dropDownList('tag', $currentProduct, ArrayHelper::map(Tag::listTag(), 'id', 'name'),

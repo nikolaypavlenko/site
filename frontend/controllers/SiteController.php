@@ -97,6 +97,7 @@ class SiteController extends Controller
          // постраничный вывод товара
         $query = Product::find()
                 ->select('product.*')
+                ->distinct()
                 ->leftJoin('img', '`img`.`product_id` = `product`.`id`')
                 ->where(['product.status' => 1])
                 ->with('img') // присоединяемая таблица
